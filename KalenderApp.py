@@ -3,36 +3,37 @@ import pandas as pd
 import calendar
 from datetime import datetime
 
-# Placeholder for user data, tasks, and events (for demo purposes)
+# Global DataFrames initialized
 users = pd.DataFrame(columns=['username', 'password'])
 tasks = pd.DataFrame(columns=['username', 'date', 'description', 'importance'])
 events = pd.DataFrame(columns=['username', 'date', 'description'])
 
 def authenticate(username, password):
+    global users
     """Check if the user credentials are valid."""
-    if username in users['username'].values:
-        user_data = users[users['username'] == username]
-        return user_data['password'].iloc[0] == password
+    user_data = users[users['username'] == username]
+    if not user_data.empty:
+        return user_data.iloc[0]['password'] == password
     return False
 
 def add_user(username, password):
-    """Add a new user to the DataFrame."""
     global users
+    """Add a new user to the DataFrame."""
     if username not in users['username'].values:
         users = users.append({'username': username, 'password': password}, ignore_index=True)
         return True
     return False
 
 def add_task(username, date, description, importance):
-    """Add a new task to the DataFrame."""
     global tasks
+    """Add a new task to the DataFrame."""
     tasks = tasks.append({
         'username': username, 'date': date, 'description': description, 'importance': importance
     }, ignore_index=True)
 
 def add_event(username, date, description):
-    """Add a new event to the DataFrame."""
     global events
+    """Add a new event to the DataFrame."""
     events = events.append({
         'username': username, 'date': date, 'description': description
     }, ignore_index=True)
@@ -61,7 +62,7 @@ def app():
         }
         </style>
         """, unsafe_allow_html=True)
-
+    
     st.title("Task and Event Manager")
 
     if 'logged_in' not in st.session_state:
@@ -135,3 +136,5 @@ def app():
 
 # Note: Uncomment the following line to run this script directly in your local environment.
 app()
+
+
