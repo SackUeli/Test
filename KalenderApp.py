@@ -20,23 +20,26 @@ def add_user(username, password):
     global users
     """Add a new user to the DataFrame."""
     if username not in users['username'].values:
-        users = users.append({'username': username, 'password': password}, ignore_index=True)
+        new_user = pd.DataFrame({'username': [username], 'password': [password]})
+        users = pd.concat([users, new_user], ignore_index=True)
         return True
     return False
 
 def add_task(username, date, description, importance):
     global tasks
     """Add a new task to the DataFrame."""
-    tasks = tasks.append({
-        'username': username, 'date': date, 'description': description, 'importance': importance
-    }, ignore_index=True)
+    new_task = pd.DataFrame({
+        'username': [username], 'date': [date], 'description': [description], 'importance': [importance]
+    })
+    tasks = pd.concat([tasks, new_task], ignore_index=True)
 
 def add_event(username, date, description):
     global events
     """Add a new event to the DataFrame."""
-    events = events.append({
-        'username': username, 'date': date, 'description': description
-    }, ignore_index=True)
+    new_event = pd.DataFrame({
+        'username': [username], 'date': [date], 'description': [description]
+    })
+    events = pd.concat([events, new_event], ignore_index=True)
 
 def get_tasks_by_date(username, date):
     """Retrieve tasks for the logged-in user for a specific date."""
@@ -136,5 +139,3 @@ def app():
 
 # Note: Uncomment the following line to run this script directly in your local environment.
 app()
-
-
