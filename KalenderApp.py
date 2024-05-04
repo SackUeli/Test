@@ -134,4 +134,4 @@ def app():
             st.info("Logged out successfully.")
 
 # Note: Uncomment the following line to run this script directly in your local environment.
-# app()
+app()
